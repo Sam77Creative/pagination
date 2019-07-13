@@ -1,10 +1,10 @@
 # Pagination
 
-Pagination is a an Observable from rxjs that works with paginated APIs.
+Pagination makes paginated apis easy to work with.
 
 Given an IPaginationOptions element and a base url, easily grab records in a paginated style.
 
-An example grabbing all of the posts from the Wordpress API.
+An example grabbing all of the posts from the Wordpress api.
 
 ```typescript
 import Pagination from "pagination";
