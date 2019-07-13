@@ -70,6 +70,9 @@ async function createResponseObject<T extends any>(
     finish: () => {
       // Unsubscribe the observer from Pagination
       observer.unsubscribe();
+
+      // Complete the observable
+      observer.complete();
     }
   };
 
