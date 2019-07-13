@@ -7,7 +7,7 @@ Given an IPaginationOptions element and a base url, easily grab records in a pag
 An example grabbing all of the posts from the Wordpress api.
 
 ```typescript
-import Pagination from "pagination";
+import Pagination from "@77io/pagination";
 import { writeFileSync } from "fs";
 
 // Setup the basic options
