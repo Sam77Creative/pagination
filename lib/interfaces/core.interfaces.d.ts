@@ -18,4 +18,6 @@ export interface IPaginationResponse<T> {
     error: Error | null;
     finish: Function;
     next: Function;
+    more: boolean;
+    recordsPerPage: number;
 }

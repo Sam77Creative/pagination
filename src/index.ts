@@ -3,7 +3,7 @@ import {
   IPaginationResponse,
   IPaginationWorker
 } from "./interfaces/core.interfaces";
-import { Observable, Subject, Subscriber } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import * as request from "request";
 import { setupCore } from "./core";
 
@@ -56,11 +56,26 @@ async function createResponseObject<T extends any>(
             pagRes.totalRecords = getTotalRecords(res, opts);
           }
 
+          // Keep track of the records per page
+          if (pagRes.payload) {
+            pagRes.recordsPerPage =
+              pagRes.payload.length > pagRes.recordsPerPage
+                ? pagRes.payload.length
+                : pagRes.recordsPerPage;
+          }
+
           // Increment the workers current page
           ++worker.currentPage;
 
           // Set the page to the worker current page minus one
           pagRes.page = worker.currentPage - 1;
+
+          // Will there be more pages?
+          if (pagRes.recordsPerPage * pagRes.page >= pagRes.totalRecords) {
+            pagRes.more = false;
+          } else {
+            pagRes.more = true;
+          }
 
           // Next it to the observer
           observer.next(pagRes);
@@ -73,7 +88,9 @@ async function createResponseObject<T extends any>(
 
       // Complete the observable
       observer.complete();
-    }
+    },
+    more: true,
+    recordsPerPage: 0
   };
 
   // Kick it off
