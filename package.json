@@ -2,14 +2,23 @@
   "name": "@77io/pagination",
   "version": "1.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "homepage": "https://github.com/Sam77Creative/pagination",
+  "bugs": {
+    "url": "https://github.com/Sam77Creative/pagination/issues",
+    "email": "sam@77creative.io"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "build-start": "npm run build && ts-node ./demo/demo.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "REST",
+    "api",
+    "pagination"
+  ],
+  "author": "sam@77creative.io",
   "license": "ISC",
   "devDependencies": {
     "@types/request": "^2.48.2",
