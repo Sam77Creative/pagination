@@ -127,6 +127,13 @@ function getNextRequest(
     return {
       url: url + "?" + opts.page.query + "=" + worker.currentPage
     };
+  } else if (opts.page.header) {
+    return {
+      url: url,
+      headers: {
+        [opts.page.header]: worker.currentPage
+      }
+    };
   } else {
     throw new Error("Not yet implemented");
   }
