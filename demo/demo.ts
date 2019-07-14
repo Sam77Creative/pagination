@@ -44,18 +44,17 @@ Pagination(url, wpOpts).subscribe((res: IPaginationResponse<IPayload[]>) => {
   }
 
   // Do we have all of the records
-  if (bundle.length === res.totalRecords) {
+  if (res.more) {
+    // Get the next set of records
+    res.next();
+  } else {
     // Finish Pagination
     res.finish();
-
     console.log(`Finished with ${bundle.length} total records.`);
 
     // Write to a local file
     fs.writeFileSync("./demo/data.json", JSON.stringify(bundle));
     console.log("Wrote to /demo/data.json");
-  } else {
-    // Get the next set of records
-    res.next();
   }
 });
 
