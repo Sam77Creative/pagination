@@ -24,7 +24,7 @@ const opts = {
   }
 };
 
-Pagination(url, wpOpts)
+Pagination(url, opts)
   .pipe(
     tap((res: IPaginationResponse<IPayload[]>) =>
       console.log(`Page ${res.page}`)
