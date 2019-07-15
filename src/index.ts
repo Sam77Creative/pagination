@@ -46,6 +46,7 @@ async function createResponseObject<T extends any>(
           // Write the error out
           if (err) {
             pagRes.error = err;
+            throw err;
           }
 
           // Put the body into the payload ASSUMING JSON
