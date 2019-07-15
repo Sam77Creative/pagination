@@ -47,4 +47,4 @@ Pagination(url, wpOpts)
   });
 ```
 
-View /demo/demo.ts for a more complete example.
+View /demo/demo.ts for more examples.
