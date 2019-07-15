@@ -1,6 +1,6 @@
 # Pagination
 
-Pagination makes paginated apis easy to work with.
+Pagination makes paginated apis easy to work with. It returns an Observable that emits each page.
 
 Given an IPaginationOptions element and a base url, easily grab records in a paginated style.
 
@@ -24,24 +24,27 @@ const opts = {
   }
 };
 
-// A bundle to save the data
-let bundle = [];
-
-Pagination(baseUrl, opts).subscribe((res: IPaginationResponse<any>) => {
-  console.log(`This is page ${res.page}.`);
-
-  bundle = bundle.concat(res.payload);
-
-  if (res.more) {
-    res.next();
-  } else {
-    res.finish();
-    console.log(`Finished with ${res.totalRecords} records.`);
-
-    // Write to a local file
-    writeFileSync("example.json", JSON.stringify(bundle));
-  }
-});
+Pagination(url, wpOpts)
+  .pipe(
+    tap((res: IPaginationResponse<IPayload[]>) =>
+      console.log(`Page ${res.page}`)
+    ),
+    catchError(
+      (err: Error, caught: Observable<IPaginationResponse<IPayload[]>>) => {
+        console.log(err);
+        return caught;
+      }
+    ),
+    reduce(
+      (acc: IPayload[], val: IPaginationResponse<IPayload[]>) =>
+        acc.concat(val.payload),
+      []
+    ),
+    last()
+  )
+  .subscribe((bundle: IPayload[]) => {
+    console.log(bundle.length);
+  });
 ```
 
 View /demo/demo.ts for a more complete example.
