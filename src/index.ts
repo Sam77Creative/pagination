@@ -1,12 +1,12 @@
-import {
-  IPaginationOptions,
-  IPaginationResponse,
-  IPaginationWorker,
-  IPaginationElement,
-  IPaginationHeaderLink
-} from "./interfaces/core.interfaces";
-import { Observable, Subject, onErrorResumeNext } from "rxjs";
 import * as request from "request";
+import { Observable, Subject } from "rxjs";
+
+import {
+  IPaginationElement,
+  IPaginationHeaderLink,
+  IPaginationOptions,
+  IPaginationResponse
+} from "./interfaces/core.interfaces";
 
 /**
  * Given a paginated api, process the data as an Observable
@@ -150,16 +150,16 @@ function hasMoreRecords<T extends any>(
   if (pagRes.totalPages) {
     // Are we on the last page
     if (pagRes.page >= pagRes.totalPages) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   } else if (pagRes.totalRecords) {
     // Have we grabbed all of the expected records?
     if (opts.recordsPerPage * pagRes.page >= pagRes.totalRecords) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   } else if (opts.page.headerLink) {
     // Attempt to get the next page via the supplied function if possible, or use our default function

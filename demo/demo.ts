@@ -20,8 +20,6 @@ function testShopify() {
     });
 }
 
-testShopify();
-
 /**
  * This example retrieves every item from the paginated api.
  *  - We tap the observable to log out the current page as progress
@@ -49,9 +47,11 @@ function getAllItems() {
       last()
     )
     .subscribe((bundle: IPayload[]) => {
-      console.log(bundle.length);
+      console.log(`There are ${bundle.length} items in this bundle`);
     });
 }
+
+getAllItems();
 
 /**
  * This example retieves a specific item from the paginated list. The Observerable completes (so request stop) once the record has been found.
