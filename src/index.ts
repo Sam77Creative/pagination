@@ -79,13 +79,17 @@ async function createResponseObject<T extends any>(
 
           // Next it to the observer
           observer.next(pagRes);
+
+          // If there is more, get it. Otherwise complete
+          if (pagRes.more) {
+            pagRes.next();
+          } else {
+            pagRes.finish();
+          }
         }
       );
     },
     finish: () => {
-      // Unsubscribe the observer from Pagination
-      observer.unsubscribe();
-
       // Complete the observable
       observer.complete();
     },
