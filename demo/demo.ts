@@ -12,7 +12,6 @@ const url: string =
   "https://seura-development.77mke.com/wordpress/wp-json/wp/v2/products";
 
 // Create the opts object for Pagination
-// @ts-ignore
 const wpOpts: IPaginationOptions = {
   totalRecords: {
     header: "x-wp-total"
@@ -24,9 +23,6 @@ const wpOpts: IPaginationOptions = {
     query: "page"
   }
 };
-
-// Create a bundle array to hold all of the records
-let bundle: IPayload[] = [];
 
 Pagination(url, wpOpts)
   .pipe(
