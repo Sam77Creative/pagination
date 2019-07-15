@@ -3,7 +3,24 @@ import { catchError, last, reduce, tap, find, filter } from "rxjs/operators";
 
 import Pagination from "../src";
 import { IPaginationResponse } from "../src/interfaces/core.interfaces";
-import { url, wpOpts, IPayload } from "./constants";
+import { wpUrl, wpOpts, IPayload, sUrl, sOpts } from "./constants";
+
+function testShopify() {
+  Pagination(sUrl + "?limit=2", sOpts)
+    .pipe(
+      reduce(
+        (acc: any[], res: IPaginationResponse<any>) =>
+          acc.concat(res.payload.products),
+        []
+      ),
+      last()
+    )
+    .subscribe((bundle: any[]) => {
+      console.log(`There are ${bundle.length} items in the bundle`);
+    });
+}
+
+testShopify();
 
 /**
  * This example retrieves every item from the paginated api.
@@ -13,7 +30,7 @@ import { url, wpOpts, IPayload } from "./constants";
  *  - We wait until the observable completes to emit the bundle value
  */
 function getAllItems() {
-  Pagination(url, wpOpts)
+  Pagination(wpUrl, wpOpts)
     .pipe(
       tap((res: IPaginationResponse<IPayload[]>) =>
         console.log(`Page ${res.page}`)
@@ -36,8 +53,6 @@ function getAllItems() {
     });
 }
 
-getAllItems();
-
 /**
  * This example retieves a specific item from the paginated list. The Observerable completes (so request stop) once the record has been found.
  *  - We check if it is in the current pages payload
@@ -46,7 +61,7 @@ getAllItems();
  * @param id number
  */
 function findById(id: number) {
-  Pagination(url, wpOpts)
+  Pagination(wpUrl, wpOpts)
     .pipe(
       find((res: IPaginationResponse<IPayload[]>) =>
         res.payload.find((i: IPayload) => i.id === id) ? true : false
@@ -68,7 +83,7 @@ function findById(id: number) {
  * @param type string
  */
 function filterByType(type: string) {
-  Pagination(url, wpOpts)
+  Pagination(wpUrl, wpOpts)
     .pipe(
       filter((res: IPaginationResponse<any>) =>
         res.payload.find((p: any) => p.type === type) ? true : false

@@ -1,7 +1,7 @@
 import { IPaginationOptions } from "../src/interfaces/core.interfaces";
 
 // Get the url for the paginated api
-export const url: string =
+export const wpUrl: string =
   "https://seura-development.77mke.com/wordpress/wp-json/wp/v2/products";
 
 // Create the opts object for Pagination
@@ -14,6 +14,22 @@ export const wpOpts: IPaginationOptions = {
   },
   page: {
     query: "page"
+  },
+  recordsPerPage: 10,
+  type: "JSON"
+};
+
+export const sUrl: string =
+  "https://81f328cb2827e1ee42588e57ebc425cb:0cfef7afc3289e40355fff0f87b442e5@test-seura.myshopify.com/admin/api/2019-07/products.json";
+
+export const sOpts: IPaginationOptions = {
+  type: "JSON",
+  recordsPerPage: 2,
+  page: {
+    headerLink: {
+      header: "link",
+      queryParam: "page_info"
+    }
   }
 };
 

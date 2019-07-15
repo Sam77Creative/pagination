@@ -1,13 +1,24 @@
+import request = require("request");
+
 export interface IPaginationOptions {
-  start?: number;
   page: IPaginationElement;
-  totalRecords: IPaginationElement;
-  totalPages: IPaginationElement;
+  recordsPerPage: number;
+  startPage?: number;
+  totalRecords?: IPaginationElement | undefined;
+  totalPages?: IPaginationElement | undefined;
+  type: "JSON"; // More will be added later
 }
 
 export interface IPaginationElement {
   header?: string;
   query?: string;
+  headerLink?: IPaginationHeaderLink;
+}
+
+export interface IPaginationHeaderLink {
+  header: string;
+  queryParam?: string;
+  callback?: (header: string) => request.Options;
 }
 
 export interface IPaginationWorker {
@@ -16,11 +27,11 @@ export interface IPaginationWorker {
 
 export interface IPaginationResponse<T> {
   page: number;
-  totalRecords: number;
   payload: T;
   error: Error | null;
   finish: Function;
   next: Function;
   more: boolean;
-  recordsPerPage: number;
+  totalRecords?: number;
+  totalPages?: number;
 }
