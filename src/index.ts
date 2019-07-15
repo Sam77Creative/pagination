@@ -23,7 +23,7 @@ export default function Pagination<T extends any>(
   return Observable.create(
     async (observer: Subject<IPaginationResponse<T>>) => {
       // Create the response object
-      await createResponseObject(url, opts, worker, observer);
+      createResponseObject(url, opts, worker, observer);
     }
   );
 }
@@ -38,7 +38,7 @@ async function createResponseObject<T extends any>(
     error: null,
     page: opts.start ? opts.start : 1,
     totalRecords: 0,
-    payload: undefined,
+    payload: {} as T,
     next: async () => {
       request(
         getNextRequest(url, opts, worker),

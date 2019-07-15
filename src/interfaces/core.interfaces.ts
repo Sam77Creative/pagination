@@ -17,7 +17,7 @@ export interface IPaginationWorker {
 export interface IPaginationResponse<T> {
   page: number;
   totalRecords: number;
-  payload: T | undefined;
+  payload: T;
   error: Error | null;
   finish: Function;
   next: Function;

@@ -26,7 +26,7 @@ function getAllItems() {
       ),
       reduce(
         (acc: IPayload[], val: IPaginationResponse<IPayload[]>) =>
-          val.payload ? acc.concat(val.payload) : acc,
+          acc.concat(val.payload),
         []
       ),
       last()
@@ -35,6 +35,8 @@ function getAllItems() {
       console.log(bundle.length);
     });
 }
+
+getAllItems();
 
 /**
  * This example retieves a specific item from the paginated list. The Observerable completes (so request stop) once the record has been found.
