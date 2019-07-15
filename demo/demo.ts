@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { catchError, last, reduce, tap, find } from "rxjs/operators";
+import { catchError, last, reduce, tap, find, filter } from "rxjs/operators";
 
 import Pagination from "../src";
 import { IPaginationResponse } from "../src/interfaces/core.interfaces";
@@ -57,5 +57,30 @@ function findById(id: number) {
     )
     .subscribe((val: IPayload) => {
       console.log(`Their name is ${val.name}`);
+    });
+}
+
+/**
+ * This example filters the entire paginated data by a 'type' attribute.
+ *  - We filter the stream by checking if any items with this type exists in the payload
+ *  - We reduce it by applying a filter on the incoming data
+ *  - We log out the number of items in the filtered results
+ * @param type string
+ */
+function filterByType(type: string) {
+  Pagination(url, wpOpts)
+    .pipe(
+      filter((res: IPaginationResponse<any>) =>
+        res.payload.find((p: any) => p.type === type) ? true : false
+      ),
+      reduce(
+        (acc: any[], res: IPaginationResponse<any>) =>
+          acc.concat(res.payload.filter((p: any) => p.type === type)),
+        []
+      ),
+      last()
+    )
+    .subscribe((filteredData: any[]) => {
+      console.log(`There are ${filteredData.length} items in this list`);
     });
 }
