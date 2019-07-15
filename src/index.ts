@@ -239,7 +239,8 @@ function getPageByHeaderLink(
         return parseHeaderLink(url, page, header);
       }
     } else {
-      throw new Error("Current page is not 1 but header is not accessible.");
+      // Return a blank string
+      return { url: "" };
     }
   }
 }
