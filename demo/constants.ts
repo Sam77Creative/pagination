@@ -20,7 +20,7 @@ export const wpOpts: IPaginationOptions = {
 };
 
 export const sUrl: string =
-  "https://81f328cb2827e1ee42588e57ebc425cb:0cfef7afc3289e40355fff0f87b442e5@test-seura.myshopify.com/admin/api/2019-07/products.json";
+  "{APIKEY}@test-seura.myshopify.com/admin/api/2019-07/products.json";
 
 export const sOpts: IPaginationOptions = {
   type: "JSON",
