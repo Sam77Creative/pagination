@@ -4,30 +4,13 @@ import {
   IPaginationOptions
 } from "../src/interfaces/core.interfaces";
 import * as fs from "fs";
-
-// Get the url for the paginated api
-const url: string =
-  "https://seura-development.77mke.com/wordpress/wp-json/wp/v2/products";
-
-// Create the opts object for Pagination
-// @ts-ignore
-const wpOpts: IPaginationOptions = {
-  totalRecords: {
-    header: "x-wp-total"
-  },
-  totalPages: {
-    header: "x-wp-totalpages"
-  },
-  page: {
-    query: "page"
-  }
-};
+import { wpOpts, url } from "./constants";
 
 // Create a bundle array to hold all of the records
 let bundle: IPayload[] = [];
 
 // Setup the pagination
-Pagination(url, wpOpts).subscribe((res: IPaginationResponse<IPayload[]>) => {
+Pagination.of(url, wpOpts).subscribe((res: IPaginationResponse<IPayload[]>) => {
   if (res.error) {
     handle(res.error);
   }
@@ -54,7 +37,7 @@ Pagination(url, wpOpts).subscribe((res: IPaginationResponse<IPayload[]>) => {
 
     // Write to a local file
     fs.writeFileSync("./demo/data.json", JSON.stringify(bundle));
-    console.log("Wrote to /demo/data.json");
+    console.log("Wrote to /demo/data/demoData.json");
   }
 });
 

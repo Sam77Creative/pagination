@@ -6,26 +6,118 @@ import {
 import { Observable, Subject } from "rxjs";
 import * as request from "request";
 import { setupCore } from "./core";
+import { isFunction } from "./utilities";
+import * as _ from "underscore";
 
 /**
  * Given a paginated api, process the data as an Observable
  * @param url
  * @param opts
  */
-export default function Pagination<T extends any>(
-  url: string,
-  incomingOpts: IPaginationOptions
-): Observable<IPaginationResponse<T>> {
-  // Setup default options
-  const { opts, worker } = setupCore(incomingOpts);
+export default abstract class Pagination {
+  static of<T extends any>(
+    url: string,
+    incomingOpts: IPaginationOptions
+  ): Observable<IPaginationResponse<T>> {
+    // Setup default options
+    const { opts, worker } = setupCore(incomingOpts);
 
-  // Create and return the primary Observable
-  return Observable.create(
-    async (observer: Subject<IPaginationResponse<T>>) => {
-      // Create the response object
-      await createResponseObject(url, opts, worker, observer);
-    }
-  );
+    // Create and return the primary Observable
+    return Observable.create(
+      async (observer: Subject<IPaginationResponse<T>>) => {
+        // Create the response object
+        await createResponseObject(url, opts, worker, observer);
+      }
+    );
+  }
+
+  static bundle<T extends any>(
+    url: string,
+    incomingOpts: IPaginationOptions
+  ): Promise<T[]> {
+    return new Promise((resolve, reject) => {
+      // Create bundle
+      let bundle: T[] = [];
+
+      // Subscribe to of
+      this.of(url, incomingOpts).subscribe((res: IPaginationResponse<T>) => {
+        if (res.error) {
+          throw res.error;
+        }
+
+        // Get the next data set and concat to the bundle
+        if (res.payload) {
+          const data: T = res.payload;
+          if (Array.isArray(data)) {
+            bundle = bundle.concat(data);
+          } else {
+            bundle.push(data);
+          }
+        } else {
+          throw new Error("Payload is undefined");
+        }
+
+        // Do we have all of the records
+        if (res.more) {
+          // Get the next set of records
+          res.next();
+        } else {
+          res.finish();
+
+          // Resolve the bundle
+          resolve(bundle);
+        }
+      });
+    });
+  }
+
+  static find<T extends any>(
+    url: string,
+    incomingOpts: IPaginationOptions,
+    identifier: any | Function
+  ): Promise<T | undefined> {
+    return new Promise((resolve, reject) => {
+      // Subscribe to of
+      this.of(url, incomingOpts).subscribe(
+        async (res: IPaginationResponse<T>) => {
+          // If the identifier is a function, fun it with the payload
+          if (isFunction(identifier)) {
+            if (await identifier(res.payload)) {
+              resolve(res.payload);
+              res.finish();
+            } else {
+              if (res.more) {
+                res.next();
+              } else {
+                resolve();
+                res.finish();
+              }
+            }
+          } else {
+            if (_.isMatch(res.payload, identifier)) {
+              resolve(res.payload);
+              res.finish();
+            } else {
+              if (res.more) {
+                res.next();
+              } else {
+                resolve();
+                res.finish();
+              }
+            }
+          }
+        }
+      );
+    });
+  }
+
+  static filter<T extends any>(
+    url: string,
+    incomingOpts: IPaginationOptions,
+    identifier: any | Function
+  ): Promise<T[]> {
+    return new Promise((resolve, reject) => {});
+  }
 }
 
 async function createResponseObject<T extends any>(
