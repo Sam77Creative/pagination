@@ -21,28 +21,25 @@ const opts = {
   },
   page: {
     query: "page"
-  }
+  },
+  recordsPerPage: 10
 };
 
 Pagination(url, opts)
   .pipe(
-    tap((res: IPaginationResponse<IPayload[]>) =>
-      console.log(`Page ${res.page}`)
-    ),
-    catchError(
-      (err: Error, caught: Observable<IPaginationResponse<IPayload[]>>) => {
-        console.log(err);
-        return caught;
-      }
-    ),
+    tap((res: IPaginationResponse<any[]>) => console.log(`Page ${res.page}`)),
+    catchError((err: Error, caught: Observable<IPaginationResponse<any[]>>) => {
+      console.log(err);
+      return caught;
+    }),
     reduce(
-      (acc: IPayload[], val: IPaginationResponse<IPayload[]>) =>
+      (acc: IPayload[], val: IPaginationResponse<any[]>) =>
         acc.concat(val.payload),
       []
     ),
     last()
   )
-  .subscribe((bundle: IPayload[]) => {
+  .subscribe((bundle: any[]) => {
     console.log(bundle.length);
   });
 ```
