@@ -7,6 +7,14 @@ import {
   IPaginationOptions,
   IPaginationResponse
 } from "./interfaces/core.interfaces";
+import { WordpressOpts } from "./services/wordpress";
+import { ShopifyOpts } from "./services/shopify";
+
+// Bundle the services export
+export const pagOpts = {
+  wordpress: WordpressOpts,
+  shopify: ShopifyOpts
+};
 
 /**
  * Given a paginated api, process the data as an Observable

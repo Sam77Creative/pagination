@@ -1,12 +1,12 @@
 import { Observable } from "rxjs";
 import { catchError, last, reduce, tap, find, filter } from "rxjs/operators";
 
-import Pagination from "../src";
+import Pagination, { pagOpts } from "../src";
 import { IPaginationResponse } from "../src/interfaces/core.interfaces";
 import { wpUrl, wpOpts, IPayload, sUrl, sOpts } from "./constants";
 
 function testShopify() {
-  Pagination(sUrl + "?limit=2", sOpts)
+  Pagination(sUrl + "?limit=2", pagOpts.shopify)
     .pipe(
       reduce(
         (acc: any[], res: IPaginationResponse<any>) =>
