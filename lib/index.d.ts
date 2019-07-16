@@ -1,7 +1,14 @@
-import { Observable } from "rxjs";
-import { IPaginationOptions, IPaginationResponse } from "./interfaces/core.interfaces";
+export declare const Pagination: <T extends any>(url: string, opts: interfaces.IPaginationOptions) => import("rxjs").Observable<interfaces.IPaginationResponse<T>>;
+import * as interfaces from "./interfaces/core.interfaces";
+export interface IPaginationOptions extends interfaces.IPaginationOptions {
+}
+export interface IPaginationElement extends interfaces.IPaginationElement {
+}
+export interface IPaginationHeaderLink extends interfaces.IPaginationHeaderLink {
+}
+export interface IPaginationResponse<T> extends interfaces.IPaginationResponse<T> {
+}
 export declare const pagOpts: {
-    wordpress: IPaginationOptions;
-    shopify: IPaginationOptions;
+    wordpress: interfaces.IPaginationOptions;
+    shopify: interfaces.IPaginationOptions;
 };
-export default function Pagination<T extends any>(url: string, opts: IPaginationOptions): Observable<IPaginationResponse<T>>;
