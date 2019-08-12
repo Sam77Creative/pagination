@@ -10,7 +10,6 @@ An example grabbing all of the posts from the Wordpress api.
 
 ```typescript
 import Pagination from "@77io/pagination";
-import { writeFileSync } from "fs";
 import { last, reduce } from "rxjs/operators";
 
 // Setup the basic options
@@ -36,7 +35,6 @@ An example getting the first page from the Wordpress api.
 
 ```typescript
 import Pagination from "@77io/pagination";
-import { writeFileSync } from "fs";
 
 // Setup the basic options
 const baseUrl = wordpressRoot + "/wp-json/wp/v2/posts";
