@@ -3,9 +3,12 @@ import { Subject } from "rxjs";
 import { INextHeaders } from "../interfaces/core.interfaces";
 
 export function BuildPagination() {
-  return function Pagination<T extends any>(url: string, headers?: any) {
+  return function Pagination<T extends any>(
+    url: string,
+    headers?: any
+  ): Subject<T> {
     // Create the sub
-    const sub = new Subject();
+    const sub: Subject<T> = new Subject();
 
     // Start the loop
     setTimeout(() => loop(sub, url, headers, true));
