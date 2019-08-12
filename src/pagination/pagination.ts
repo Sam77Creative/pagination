@@ -3,10 +3,7 @@ import { Subject } from "rxjs";
 import { INextHeaders } from "../interfaces/core.interfaces";
 
 export function BuildPagination() {
-  return function Pagination<T extends any>(
-    url: string,
-    headers?: request.Headers
-  ) {
+  return function Pagination<T extends any>(url: string, headers?: any) {
     // Create the sub
     const sub = new Subject();
 
@@ -21,20 +18,24 @@ export function BuildPagination() {
 async function loop(
   sub: Subject<any>,
   url: string,
-  headers?: request.Headers,
+  headers?: any,
   first?: boolean
 ) {
   // Make sure we have subscribers
   if (sub.observers.length >= 1 || first) {
+    console.log(`Request: ${url}`);
     // Make the request
     request(
       {
         url: url,
-        headers
+        headers: headers
       },
       (err: Error, res: any, body: any) => {
+        if (err) {
+          throw err;
+        }
         // Next the body
-        sub.next(body);
+        sub.next(JSON.parse(body));
 
         // Get the next headers
         const nextHeaders = parseNextHeaders(res.headers);
@@ -42,6 +43,9 @@ async function loop(
         // Loop again if more records exist
         if (nextHeaders.next) {
           loop(sub, nextHeaders.next, headers);
+        } else {
+          // If no next page, complete the sub
+          sub.complete();
         }
       }
     );

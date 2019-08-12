@@ -9,39 +9,41 @@ An example grabbing all of the posts from the Wordpress api.
 ```typescript
 import Pagination from "@77io/pagination";
 import { writeFileSync } from "fs";
+import { last, reduce } from "rxjs/operators";
 
 // Setup the basic options
 const baseUrl = wordpressRoot + "/wp-json/wp/v2/posts";
-const opts = {
-  totalRecords: {
-    header: "x-wp-total"
-  },
-  totalPages: {
-    header: "x-wp-totalpages"
-  },
-  page: {
-    query: "page"
-  },
-  recordsPerPage: 10
+const headers = {
+  accept: "application/json"
 };
 
-Pagination(url, opts)
+const sub = Pagination(baseUrl, headers)
   .pipe(
-    tap((res: IPaginationResponse<any[]>) => console.log(`Page ${res.page}`)),
-    catchError((err: Error, caught: Observable<IPaginationResponse<any[]>>) => {
-      console.log(err);
-      return caught;
-    }),
-    reduce(
-      (acc: IPayload[], val: IPaginationResponse<any[]>) =>
-        acc.concat(val.payload),
-      []
-    ),
+    reduce((arr: any[], page: any[]) => {
+      return arr.concat(page);
+    }, []),
     last()
   )
-  .subscribe((bundle: any[]) => {
-    console.log(bundle.length);
+  .subscribe((allPosts: any[]) => {
+    console.log("I got all posts!");
+    sub.unsubscribe();
   });
 ```
 
-View /demo/demo.ts for more examples.
+An example getting the first page from the Wordpress api.
+
+```typescript
+import Pagination from "@77io/pagination";
+import { writeFileSync } from "fs";
+
+// Setup the basic options
+const baseUrl = wordpressRoot + "/wp-json/wp/v2/posts";
+const headers = {
+  accept: "application/json"
+};
+
+const sub = Pagination(baseUrl, headers).subscribe((posts: any[]) => {
+  console.log("I got the first page of posts!");
+  sub.unsubscribe();
+});
+```
