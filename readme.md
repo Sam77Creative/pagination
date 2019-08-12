@@ -4,7 +4,7 @@ Pagination makes paginated apis easy to work with. It returns an Observable that
 
 Given a base url and (optional) headers, easily grab records in a paginated style.
 
-This works with any api that supports the (link)[https://developer.github.com/v3/guides/traversing-with-pagination/] header.
+This works with any api that supports the [link](https://developer.github.com/v3/guides/traversing-with-pagination/) header.
 
 An example grabbing all of the posts from the Wordpress api.
 
