@@ -26,7 +26,6 @@ async function loop(
 ) {
   // Make sure we have subscribers
   if (sub.observers.length >= 1 || first) {
-    console.log(`Request: ${url}`);
     // Make the request
     request(
       {
@@ -67,7 +66,6 @@ function parseNextHeaders(headers: request.Headers): INextHeaders | undefined {
 
   // Validate
   if (!link) {
-    throw new Error("Not a supported paginated api");
     return;
   }
 
