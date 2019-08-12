@@ -21,15 +21,17 @@
   "author": "sam@77creative.io",
   "license": "ISC",
   "devDependencies": {
-    "@types/request": "^2.48.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "@types/request": "^2.48.2"
   },
   "dependencies": {
     "request": "^2.88.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "@types/request": "^2.48.2"
   },
   "peerDependencies": {
     "request": "^2.88.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.5.2",
+    "@types/request": "^2.48.2"
   }
 }
