@@ -43,6 +43,12 @@ async function loop(
         // Get the next headers
         const nextHeaders = parseNextHeaders(res.headers);
 
+        if (!nextHeaders) {
+          console.warn("Not a paginated api");
+          sub.complete();
+          return;
+        }
+
         // Loop again if more records exist
         if (nextHeaders.next) {
           loop(sub, nextHeaders.next, headers);
@@ -55,13 +61,14 @@ async function loop(
   }
 }
 
-function parseNextHeaders(headers: request.Headers): INextHeaders {
+function parseNextHeaders(headers: request.Headers): INextHeaders | undefined {
   // Get the link header
   const link = headers.link;
 
   // Validate
   if (!link) {
     throw new Error("Not a supported paginated api");
+    return;
   }
 
   // Create default output
