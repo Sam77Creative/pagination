@@ -34,7 +34,10 @@ async function loop(
       },
       (err: Error, res: any, body: any) => {
         if (err) {
-          throw err;
+          console.error("Error with request");
+          console.log(err);
+          sub.complete();
+          return;
         }
         // Next the body
         sub.next(JSON.parse(body));
