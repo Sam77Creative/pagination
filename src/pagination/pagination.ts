@@ -40,7 +40,14 @@ async function loop(
           return;
         }
         // Next the body
-        sub.next(JSON.parse(body));
+        try {
+          sub.next(JSON.parse(body));
+        } catch (e) {
+          console.error("Not a JSON response");
+          console.log(e);
+          sub.complete();
+          return;
+        }
 
         // Get the next headers
         const nextHeaders = parseNextHeaders(res.headers);
